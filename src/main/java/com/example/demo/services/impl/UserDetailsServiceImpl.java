@@ -1,18 +1,17 @@
-package com.example.demo.services;
+package com.example.demo.services.impl;
 
 import com.example.demo.repositories.UserRepository;
+import lombok.AllArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 @Service
+@AllArgsConstructor
 public class UserDetailsServiceImpl {
-    private final UserRepository userRepository;
 
-    public UserDetailsServiceImpl(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
+    private final UserRepository userRepository;
 
     public UserDetailsService userDetailsService(){
         return new UserDetailsService() {
