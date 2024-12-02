@@ -1,6 +1,8 @@
 package com.example.demo.services;
 
 import com.example.demo.domains.dtos.*;
+import org.springframework.stereotype.Component;
+
 
 public interface AuthenticationService {
     JwtAuthenticationResponse signUp(SignUpRequest request);

@@ -11,12 +11,12 @@ import org.springframework.context.annotation.Configuration;
 @Getter
 @Setter
 public class JwtProperties {
-    
+    @Value("${jwt.keystore.path}")
     private String keystorePath;
-
+    @Value("${jwt.keystore.password}")
     private String keystorePassword;
-
+    @Value("${jwt.key.alias}")
     private String keyAlias;
-
+    @Value("${jwt.key.password}")
     private String keyPassword;
 }
