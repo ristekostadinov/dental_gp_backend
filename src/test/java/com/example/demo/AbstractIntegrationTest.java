@@ -1,8 +1,6 @@
-package com.example.demo.controllers;
+package com.example.demo;
 
-import com.example.demo.DentalGpBackendApplication;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.DynamicPropertyRegistry;
@@ -15,7 +13,7 @@ import org.testcontainers.containers.PostgreSQLContainer;
 )
 @ActiveProfiles("test")
 @AutoConfigureMockMvc
-abstract class AbstractIntegrationTest {
+public abstract class AbstractIntegrationTest {
 
     private static final PostgreSQLContainer<?> POSTGRES_CONTAINER =
             new PostgreSQLContainer<>("postgres:latest")

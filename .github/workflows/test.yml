@@ -45,3 +45,13 @@ jobs:
 
       - name: Install Dependencies and Run Tests
         run: mvn clean test -Dspring.profiles.active=test
+
+      - name: Generate Surefire HTML Report
+        run: mvn surefire-report:report
+
+      - name: Upload Test Report
+        uses: actions/upload-artifact@v3
+        with:
+          name: surefire-html-report
+          path: target/reports
+
