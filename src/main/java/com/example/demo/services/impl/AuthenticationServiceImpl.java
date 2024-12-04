@@ -4,6 +4,7 @@ import com.example.demo.domains.dtos.*;
 import com.example.demo.repositories.UserRepository;
 import com.example.demo.services.AuthenticationService;
 import com.example.demo.services.JwtService;
+import com.example.demo.services.UserService;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,6 +24,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
+    private final UserService userService;
 
     @Override
     @Transactional
@@ -39,7 +41,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
         try {
             log.debug("Saving user to the database: {}", user);
-            var savedUser = userRepository.save(user);
+            var savedUser = userService.save(user);
 
             log.debug("Generating JWT for user: {}", savedUser);
             var jwt = jwtService.generateToken(savedUser);

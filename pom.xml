@@ -85,11 +85,14 @@
 			<optional>true</optional>
 		</dependency>
 
+
+		<!-- https://mvnrepository.com/artifact/org.bouncycastle/bcprov-jdk18on -->
 		<dependency>
 			<groupId>org.bouncycastle</groupId>
-			<artifactId>bcprov-jdk15to18</artifactId>
+			<artifactId>bcprov-jdk18on</artifactId>
 			<version>1.79</version>
 		</dependency>
+
 
 
 		<!-- Spring Boot Test Starter -->
