@@ -1,0 +1,18 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:latest
+    container_name: postgres-dental-db
+    restart: always
+    environment:
+      POSTGRES_USER: riki
+      POSTGRES_PASSWORD: riki@123
+      POSTGRES_DB: dental_gp_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+
+volumes:
+  postgres-data:

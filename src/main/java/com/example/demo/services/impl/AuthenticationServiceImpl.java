@@ -6,6 +6,7 @@ import com.example.demo.services.AuthenticationService;
 import com.example.demo.services.JwtService;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -15,6 +16,7 @@ import java.util.HashSet;
 
 @Service
 @AllArgsConstructor
+@Slf4j
 public class AuthenticationServiceImpl implements AuthenticationService {
 
     private final UserRepository userRepository;
@@ -25,6 +27,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Override
     @Transactional
     public JwtAuthenticationResponse signUp(SignUpRequest request) {
+        log.debug("Processing sign-up request: {}", request);
+
         var user = new User();
         user.setFirstName(request.firstName());
         user.setLastName(request.lastName());
@@ -32,21 +36,32 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         user.setEmail(request.email());
         user.setPassword(passwordEncoder.encode(request.password()));
         user.setRoles(new HashSet<>());
-        userRepository.save(user);
-        var jwt = jwtService.generateToken(user);
 
-        return new JwtAuthenticationResponse(jwt,
-                user.getUsername(),
-                user.getEmail(),
-                user.getRoles()
-        );
+        try {
+            log.debug("Saving user to the database: {}", user);
+            var savedUser = userRepository.save(user);
+
+            log.debug("Generating JWT for user: {}", savedUser);
+            var jwt = jwtService.generateToken(savedUser);
+
+            log.debug("Returning response with JWT: {}", jwt);
+            return new JwtAuthenticationResponse(jwt,
+                    savedUser.getUsername(),
+                    savedUser.getEmail(),
+                    savedUser.getRoles()
+            );
+        } catch (Exception e) {
+            log.error("Error during sign-up process: {}", e.getStackTrace(), e);
+            throw e;
+        }
     }
+
 
     @Override
     public JwtAuthenticationResponse signIn(SignInRequest request) {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(request.username(), request.password()));
-        var user = userRepository.findByUsername(request.username())
+        var user = userRepository.findByEmail(request.username())
                 .orElseThrow(() -> new IllegalArgumentException("Invalid username or password."));
         var jwt = jwtService.generateToken(user);
         return new JwtAuthenticationResponse(jwt,
