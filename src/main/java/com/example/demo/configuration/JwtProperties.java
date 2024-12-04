@@ -14,4 +14,5 @@ public class JwtProperties {
     private String keystorePassword;
     private String keyAlias;
     private String keyPassword;
+    private long expiration;
 }

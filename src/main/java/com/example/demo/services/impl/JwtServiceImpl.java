@@ -3,45 +3,72 @@ package com.example.demo.services.impl;
 import com.example.demo.configuration.JwtProperties;
 import com.example.demo.services.JwtService;
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import jakarta.annotation.PostConstruct;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.ResourceLoader;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import javax.crypto.SecretKey;
+import java.io.FileNotFoundException;
 import java.io.InputStream;
 
 import java.security.KeyStore;
+import java.security.KeyStoreException;
 import java.security.PrivateKey;
+import java.security.PublicKey;
+import java.time.Instant;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
 @Service
+@Slf4j
 public class JwtServiceImpl implements JwtService {
 
-    @Value("${token.signing.key}")
-    private String publicKey;
-    @Value("${expiration.mills}")
-    private long expirationMills;
-    private final JwtProperties jwtProperties;
-    private PrivateKey privateKey;
 
-    public JwtServiceImpl(JwtProperties jwtProperties) {
+    private final JwtProperties jwtProperties;
+    private final ResourceLoader resourceLoader;
+
+    private PrivateKey privateKey;
+    private PublicKey publicKey;
+
+    public JwtServiceImpl(JwtProperties jwtProperties, ResourceLoader resourceLoader) {
         this.jwtProperties = jwtProperties;
+        this.resourceLoader = resourceLoader;
     }
 
     @PostConstruct
     public void loadKey() throws Exception {
         KeyStore keyStore = KeyStore.getInstance("JKS");
-        try (InputStream is = getClass().getResourceAsStream(jwtProperties.getKeystorePath())) {
+        Resource resource = resourceLoader.getResource("classpath:dental_gp.jks");
+        if (!resource.exists()) {
+            throw new FileNotFoundException("Keystore not found in classpath");
+        }
+            log.info("Keystore loaded successfully.");
+        try (InputStream is = resource.getInputStream()) {
             keyStore.load(is, jwtProperties.getKeystorePassword().toCharArray());
+            if (!keyStore.containsAlias(jwtProperties.getKeyAlias())) {
+                throw new KeyStoreException("Key alias not found: " + jwtProperties.getKeyAlias());
+            }
             privateKey = (PrivateKey) keyStore.getKey(jwtProperties.getKeyAlias(), jwtProperties.getKeyPassword().toCharArray());
+            log.info("Private key loaded successfully.");
+
+            publicKey = keyStore.getCertificate(jwtProperties.getKeyAlias()).getPublicKey();
+            if (publicKey == null) {
+                log.error("Public key is null for alias '{}'.", jwtProperties.getKeyAlias());
+                throw new KeyStoreException("Public key is null for alias: " + jwtProperties.getKeyAlias());
+            }
+            log.info("Public key loaded successfully.");
         }
     }
 
@@ -62,27 +89,35 @@ public class JwtServiceImpl implements JwtService {
     }
 
     public String generateToken(Map<String, Object> extraClaims, UserDetails userDetails) {
-        return Jwts.builder()
-                .claims(extraClaims)
-                .subject(userDetails.getUsername())
-                .issuedAt(new Date(System.currentTimeMillis()))
-                .expiration(new Date(System.currentTimeMillis() + this.expirationMills)) // Expiration example: 1 day
-                .signWith(privateKey)
-                .compact();
+        try {
+            long expirationMills = jwtProperties.getExpiration();
+            if (expirationMills <= 0) {
+                throw new IllegalArgumentException("Expiration time must be greater than 0");
+            }
+
+            log.debug("Generating token for user: {}, expiration: {}", userDetails.getUsername(), expirationMills);
+
+            return Jwts.builder()
+                    .claims(extraClaims)
+                    .subject(userDetails.getUsername())
+                    .issuedAt(new Date(System.currentTimeMillis()))
+                    .expiration(Date.from(Instant.now().plusMillis(expirationMills)))
+                    .signWith(privateKey)
+                    .compact();
+        } catch (Exception e) {
+            log.error("Error generating JWT token: {}", e.getMessage(), e);
+            throw new JwtException("Error while generating token");
+        }
     }
+
 
     private <T> T extractClaim(String token, Function<Claims, T> claimsResolver){
         final Claims claims = extractAllClaims(token);
         return claimsResolver.apply(claims);
     }
 
-    private SecretKey getSigningKey(){
-        byte [] keyBytes = Decoders.BASE64.decode(publicKey);
-        return Keys.hmacShaKeyFor(keyBytes);
-    }
-
     private Claims extractAllClaims(String token){
-        return Jwts.parser().verifyWith(getSigningKey()).build().parseSignedClaims(token).getPayload();
+        return Jwts.parser().verifyWith(publicKey).build().parseSignedClaims(token).getPayload();
     }
 
     private boolean isTokenExpired(String token) {
