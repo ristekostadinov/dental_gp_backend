@@ -1,5 +1,4 @@
 package com.example.demo.services.impl;
-import com.example.demo.domains.User;
 import com.example.demo.domains.dtos.*;
 import com.example.demo.repositories.UserRepository;
 import com.example.demo.services.AuthenticationService;
@@ -10,10 +9,8 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
 
 @Service
 @AllArgsConstructor
@@ -21,7 +18,6 @@ import java.util.HashSet;
 public class AuthenticationServiceImpl implements AuthenticationService {
 
     private final UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
     private final UserService userService;
@@ -30,18 +26,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Transactional
     public JwtAuthenticationResponse signUp(SignUpRequest request) {
         log.debug("Processing sign-up request: {}", request);
-
-        var user = new User();
-        user.setFirstName(request.firstName());
-        user.setLastName(request.lastName());
-        user.setUsername(request.username());
-        user.setEmail(request.email());
-        user.setPassword(passwordEncoder.encode(request.password()));
-        user.setRoles(new HashSet<>());
-
         try {
-            log.debug("Saving user to the database: {}", user);
-            var savedUser = userService.save(user);
+            log.debug("Saving user to the database from request: {}", request);
+            var savedUser = userService.save(request);
 
             log.debug("Generating JWT for user: {}", savedUser);
             var jwt = jwtService.generateToken(savedUser);
@@ -99,6 +86,5 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public void resendActivationEmail(String email) {
-        var user = userRepository.findByEmail(email);
     }
 }
