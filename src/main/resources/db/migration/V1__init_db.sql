@@ -13,6 +13,12 @@ create table resources(
                           id bigserial primary key
 );
 
+drop table if exists doctor_patient cascade ;
+create table if not exists doctor_patient(
+                                             user_id bigint,
+                                             primary key (user_id)
+    );
+
 drop table if exists patients cascade ;
 create table patients(
                          id bigserial primary key,
@@ -81,12 +87,6 @@ create table if not exists user_role(
     foreign key (role_id) references roles(id) on delete cascade
     );
 
-drop table if exists doctor_patient cascade ;
-create table if not exists doctor_patient(
-                                             user_id bigint,
-                                             primary key (user_id)
-    );
-
 drop table if exists resource_treatment;
 create table if not exists resource_treatment(
                                                  resource_id bigint,
@@ -94,6 +94,4 @@ create table if not exists resource_treatment(
                                                  primary key (resource_id, treatment_id),
     foreign key(resource_id) references resources(id) on delete cascade ,
     foreign key(treatment_id) references treatments(id) on delete cascade
-    )
-
-
+    );
