@@ -3,7 +3,7 @@ package com.example.demo.services.impl;
 import com.example.demo.domains.User;
 import com.example.demo.domains.dtos.EditUserRequest;
 import com.example.demo.domains.dtos.SignUpRequest;
-import com.example.demo.domains.dtos.projections.UserView;
+import com.example.demo.domains.dtos.UserDTO;
 import com.example.demo.exceptions.UserNotFoundException;
 import com.example.demo.repositories.UserRepository;
 import com.example.demo.services.UserService;
@@ -44,7 +44,7 @@ public class UserServiceImpl implements UserService {
         return userRepository.findById(id).orElseThrow(()-> new UserNotFoundException("User with id " + id + " not found"));
     }
 
-    public List<UserView> findAll() {
+    public List<User> findAll() {
 //        return this.userRepository.listUsers();
         throw new RuntimeException("Not implemented yet");
     }

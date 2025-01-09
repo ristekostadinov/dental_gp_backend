@@ -2,7 +2,7 @@ package com.example.demo.controllers;
 
 import com.example.demo.domains.User;
 import com.example.demo.domains.dtos.EditUserRequest;
-import com.example.demo.domains.dtos.projections.UserView;
+import com.example.demo.domains.dtos.UserDTO;
 import com.example.demo.services.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -28,7 +28,7 @@ public class UserController {
     }
 
     @GetMapping("/all")
-    public ResponseEntity<List<UserView>> listUsers() {
+    public ResponseEntity<List<User>> listUsers() {
         return new ResponseEntity<>(this.userService.findAll(), HttpStatus.OK);
     }
 }
