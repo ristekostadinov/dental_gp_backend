@@ -48,6 +48,6 @@ public class PatientServiceImpl implements PatientService {
         result.setLastName(patient.getLastName());
         result.setEmail(patient.getEmail());
         result.setPhoneNumber(patient.getPhoneNumber());
-        return result;
+        return patientRepository.save(result);
     }
 }

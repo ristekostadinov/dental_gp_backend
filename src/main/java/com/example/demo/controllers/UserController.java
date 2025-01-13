@@ -1,5 +1,4 @@
 package com.example.demo.controllers;
-
 import com.example.demo.domains.User;
 import com.example.demo.domains.dtos.EditUserRequest;
 import com.example.demo.domains.dtos.UserDTO;
@@ -17,17 +16,17 @@ import java.util.List;
 public class UserController {
     private final UserService userService;
 
-    @PutMapping("/edit/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<User> editUser(@PathVariable Long id, @RequestBody EditUserRequest userRequest) {
         return new ResponseEntity<>(this.userService.editUser(id, userRequest), HttpStatus.OK);
     }
 
-    @GetMapping("/edit/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<User> getUser(@PathVariable Long id) {
         return new ResponseEntity<>(this.userService.findById(id), HttpStatus.OK);
     }
 
-    @GetMapping("/all")
+    @GetMapping("/")
     public ResponseEntity<List<User>> listUsers() {
         return new ResponseEntity<>(this.userService.findAll(), HttpStatus.OK);
     }
