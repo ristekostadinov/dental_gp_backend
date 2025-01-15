@@ -30,5 +30,9 @@ public class PatientController {
     public ResponseEntity<Patient> getPatient(@PathVariable Long id) {
         return new ResponseEntity<>(patientService.findById(id), HttpStatus.OK);
     }
-    
+
+    @DeleteMapping("/{id}")
+    public void deletePatient(@PathVariable Long id) {
+        patientService.delete(id);
+    }
 }

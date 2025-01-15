@@ -59,6 +59,11 @@ public class PatientServiceImpl implements PatientService {
         return repository.save(result);
     }
 
+    @Override
+    public void delete(Long id) {
+        this.repository.deleteById(id);
+    }
+
     public Page<Patient> demoSpecification(String name, String lastName, String email, String phoneNumber, String insurance) {
         Specification<Patient> specification = (root, query, cb)
                 -> {

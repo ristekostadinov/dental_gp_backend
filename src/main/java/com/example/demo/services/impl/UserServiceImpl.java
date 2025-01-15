@@ -69,4 +69,8 @@ public class UserServiceImpl implements UserService {
         user.setRoles(editUserRequest.roles());
         return repository.save(user);
     }
+
+    public void delete(Long id){
+        this.repository.deleteById(id);
+    }
 }

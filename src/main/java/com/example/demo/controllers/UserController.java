@@ -30,4 +30,9 @@ public class UserController {
     public ResponseEntity<List<UserDTO>> listUsers() {
         return new ResponseEntity<>(this.userService.findAllUsersByRoles(), HttpStatus.OK);
     }
+
+    @DeleteMapping("/{id}")
+    public void deleteUser(@PathVariable Long id) {
+        this.userService.delete(id);
+    }
 }

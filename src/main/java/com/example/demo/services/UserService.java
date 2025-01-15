@@ -15,4 +15,5 @@ public interface UserService {
     List<UserDTO> findAllUsersByRoles();
     User editUser(Long id, EditUserRequest editUserRequest);
     User findByEmail(String email);
+    void delete(Long id);
 }

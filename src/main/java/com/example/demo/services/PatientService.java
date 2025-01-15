@@ -9,4 +9,5 @@ public interface PatientService {
     List<Patient> findAll();
     Patient findById(Long id);
     Patient edit(Long id, Patient patient);
+    void delete(Long id);
 }
