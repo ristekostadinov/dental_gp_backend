@@ -3,10 +3,12 @@ package com.example.demo.domains;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.io.Serializable;
+
 @Entity
 @Table(name = "patients")
 @Data
-public class Patient {
+public class Patient implements Cloneable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="id")
@@ -26,4 +28,14 @@ public class Patient {
 
     @Column(name = "insurance")
     private boolean insurance;
+
+    @Override
+    public Patient clone() {
+        try {
+            return new Patient();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return null;
+    }
 }
