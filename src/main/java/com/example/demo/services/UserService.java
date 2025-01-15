@@ -14,4 +14,5 @@ public interface UserService {
     User findById(Long id);
     List<UserDTO> findAllUsersByRoles();
     User editUser(Long id, EditUserRequest editUserRequest);
+    User findByUsername(String username);
 }

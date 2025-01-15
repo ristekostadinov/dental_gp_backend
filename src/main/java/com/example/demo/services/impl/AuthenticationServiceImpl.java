@@ -16,8 +16,6 @@ import org.springframework.stereotype.Service;
 @AllArgsConstructor
 @Slf4j
 public class AuthenticationServiceImpl implements AuthenticationService {
-
-    private final UserRepository userRepository;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
     private final UserService userService;
@@ -50,8 +48,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     public JwtAuthenticationResponse signIn(SignInRequest request) {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(request.username(), request.password()));
-        var user = userRepository.findByEmail(request.username())
-                .orElseThrow(() -> new IllegalArgumentException("Invalid username or password."));
+        var user = userService.findByUsername(request.username());
         var jwt = jwtService.generateToken(user);
         return new JwtAuthenticationResponse(jwt,
                 user.getUsername(),

@@ -12,10 +12,10 @@ import java.util.Optional;
 @Service
 @AllArgsConstructor
 public class RoleServiceImpl implements RoleService {
-    private final RoleRepository roleRepository;
+    private final RoleRepository repository;
 
     @Override
     public List<Role> findAll() {
-        return this.roleRepository.findAllByNameNotLike("SUPER_ADMIN");
+        return this.repository.findAllByNameNotLike("SUPER_ADMIN");
     }
 }

@@ -25,12 +25,12 @@ import java.util.List;
 @Slf4j
 public class UserServiceImpl implements UserService {
 
-    private final UserRepository userRepository;
+    private final UserRepository repository;
     private final RoleService roleService;
     private final PasswordEncoder passwordEncoder;
 
     public User save(User user) {
-        return userRepository.save(user);
+        return repository.save(user);
     }
 
     @Transactional
@@ -43,15 +43,19 @@ public class UserServiceImpl implements UserService {
         user.setPassword(passwordEncoder.encode(request.password()));
         user.setRoles(new HashSet<>());
 
-        return userRepository.save(user);
+        return repository.save(user);
     }
     public User findById(Long id) {
-        return userRepository.findById(id).orElseThrow(()-> new UserNotFoundException("User with id " + id + " not found"));
+        return repository.findById(id).orElseThrow(()-> new UserNotFoundException("User with id " + id + " not found"));
+    }
+
+    public User findByUsername(String username) {
+        return repository.findByUsername(username).orElseThrow(()-> new UserNotFoundException("User with username " + username + " not found"));
     }
 
     public List<UserDTO> findAllUsersByRoles() {
         List<Role> roles = roleService.findAll();
-        return this.userRepository.findAllByRoles(roles);
+        return this.repository.findAllByRoles(roles);
     }
 
     @Transactional
@@ -63,6 +67,6 @@ public class UserServiceImpl implements UserService {
         user.setEmail(editUserRequest.email());
         user.setPassword(passwordEncoder.encode(editUserRequest.password()));
         user.setRoles(editUserRequest.roles());
-        return userRepository.save(user);
+        return repository.save(user);
     }
 }
