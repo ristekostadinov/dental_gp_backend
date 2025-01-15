@@ -12,6 +12,6 @@ public interface UserService {
     User save(User user);
     User save(SignUpRequest request);
     User findById(Long id);
-    List<User> findAll();
+    List<UserDTO> findAllUsersByRoles();
     User editUser(Long id, EditUserRequest editUserRequest);
 }

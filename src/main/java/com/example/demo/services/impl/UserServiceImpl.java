@@ -1,18 +1,22 @@
 package com.example.demo.services.impl;
 
+import com.example.demo.domains.Role;
 import com.example.demo.domains.User;
 import com.example.demo.domains.dtos.EditUserRequest;
 import com.example.demo.domains.dtos.SignUpRequest;
 import com.example.demo.domains.dtos.UserDTO;
 import com.example.demo.exceptions.UserNotFoundException;
 import com.example.demo.repositories.UserRepository;
+import com.example.demo.services.RoleService;
 import com.example.demo.services.UserService;
+import jakarta.persistence.TypedQuery;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
@@ -22,6 +26,7 @@ import java.util.List;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
+    private final RoleService roleService;
     private final PasswordEncoder passwordEncoder;
 
     public User save(User user) {
@@ -44,9 +49,9 @@ public class UserServiceImpl implements UserService {
         return userRepository.findById(id).orElseThrow(()-> new UserNotFoundException("User with id " + id + " not found"));
     }
 
-    public List<User> findAll() {
-//        return this.userRepository.listUsers();
-        throw new RuntimeException("Not implemented yet");
+    public List<UserDTO> findAllUsersByRoles() {
+        List<Role> roles = roleService.findAll();
+        return this.userRepository.findAllByRoles(roles);
     }
 
     @Transactional
