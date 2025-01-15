@@ -16,7 +16,6 @@ import java.util.Optional;
 public interface UserRepository extends JpaRepository<User, Long> {
     Optional<User> findByEmail(String email);
 
-    Optional<User> findByUsername(String username);
 
     @Query("select new com.example.demo.domains.dtos.UserDTO(u.firstName, u.lastName, u.username, u.roles) from User u where u.roles in :roles or u.roles = null")
     List<UserDTO> findAllByRoles(@Param("roles") List<Role> roles);

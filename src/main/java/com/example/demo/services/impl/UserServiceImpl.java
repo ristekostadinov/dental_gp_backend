@@ -49,8 +49,8 @@ public class UserServiceImpl implements UserService {
         return repository.findById(id).orElseThrow(()-> new UserNotFoundException("User with id " + id + " not found"));
     }
 
-    public User findByUsername(String username) {
-        return repository.findByUsername(username).orElseThrow(()-> new UserNotFoundException("User with username " + username + " not found"));
+    public User findByEmail(String email) {
+        return repository.findByEmail(email).orElseThrow(()-> new UserNotFoundException("User with email " + email + " not found"));
     }
 
     public List<UserDTO> findAllUsersByRoles() {
