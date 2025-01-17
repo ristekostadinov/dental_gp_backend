@@ -1,12 +1,8 @@
 package com.example.demo.repositories;
 
-
-import com.example.demo.domains.Role;
 import com.example.demo.domains.User;
 import com.example.demo.domains.dtos.UserDTO;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import java.util.List;
 import java.util.Optional;
@@ -16,9 +12,6 @@ import java.util.Optional;
 public interface UserRepository extends JpaRepository<User, Long> {
     Optional<User> findByEmail(String email);
 
-    @Query(""" 
-select new UserDTO(u.firstName, u.lastName, u.username, u.roles) from User u
-where u.roles in :roles or u.roles = null
-""")
-    List<UserDTO> findAllByRoles(@Param("userRoles") List<Role> roles);
+    List<UserDTO> findAllByEmailNotLike(String email);
+
 }

@@ -2,6 +2,7 @@ package com.example.demo.controllers;
 import com.example.demo.domains.User;
 import com.example.demo.domains.dtos.EditUserRequest;
 import com.example.demo.domains.dtos.UserDTO;
+import com.example.demo.domains.dtos.projections.UserProjection;
 import com.example.demo.services.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -28,7 +29,7 @@ public class UserController {
 
     @GetMapping("/")
     public ResponseEntity<List<UserDTO>> listUsers() {
-        return new ResponseEntity<>(this.userService.findAllUsersByRoles(), HttpStatus.OK);
+        return new ResponseEntity<>(this.userService.listAll(), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")

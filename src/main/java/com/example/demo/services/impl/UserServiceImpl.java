@@ -5,6 +5,7 @@ import com.example.demo.domains.User;
 import com.example.demo.domains.dtos.EditUserRequest;
 import com.example.demo.domains.dtos.SignUpRequest;
 import com.example.demo.domains.dtos.UserDTO;
+import com.example.demo.domains.dtos.projections.UserProjection;
 import com.example.demo.exceptions.UserNotFoundException;
 import com.example.demo.repositories.UserRepository;
 import com.example.demo.services.RoleService;
@@ -53,9 +54,8 @@ public class UserServiceImpl implements UserService {
         return repository.findByEmail(email).orElseThrow(()-> new UserNotFoundException("User with email " + email + " not found"));
     }
 
-    public List<UserDTO> findAllUsersByRoles() {
-        List<Role> roles = roleService.findAll();
-        return this.repository.findAllByRoles(roles);
+    public List<UserDTO> listAll() {
+        return this.repository.findAllByEmailNotLike("super@admin.com");
     }
 
     @Transactional
