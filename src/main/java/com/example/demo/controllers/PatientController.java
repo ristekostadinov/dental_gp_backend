@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @RestController
 @RequestMapping("/api/patients")
@@ -22,13 +23,38 @@ public class PatientController {
     }
 
     @GetMapping("/")
-    public List<Patient> getAllPatients() {
-        return patientService.findAll();
+    public ResponseEntity<List<Patient>> getAllPatients() {
+        try {
+            List<Patient> patients = patientService.findAll();
+            return new ResponseEntity<>(patients, HttpStatus.CREATED);
+        }catch (NoSuchElementException e){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Patient> getPatient(@PathVariable Long id) {
-        return new ResponseEntity<>(patientService.findById(id), HttpStatus.OK);
+        try {
+            Patient patient = patientService.findById(id);
+            return new ResponseEntity<>(patient, HttpStatus.OK);
+        }catch (NoSuchElementException e){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Patient> updatePatient(@PathVariable Long id, @RequestBody PatientRegistrationDTO patientDTO) {
+        try {
+            Patient patient = patientService.findById(id);
+            patient.setFirstName(patientDTO.firstName());
+            patient.setLastName(patientDTO.lastName());
+            patient.setEmail(patientDTO.email());
+            patient.setInsurance(patientDTO.insurance());
+
+            return new ResponseEntity<>(patient, HttpStatus.OK);
+        }catch (NoSuchElementException e){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
     @DeleteMapping("/{id}")
