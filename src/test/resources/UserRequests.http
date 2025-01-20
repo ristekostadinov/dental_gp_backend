@@ -1,1 +1,24 @@
-GET localhost:8080/api/users/
+### List All Users
+GET {{baseUrl}}/api/users
+Authorization: Bearer {{headers.Authorization}}
+Content-Type: application/json
+
+### Get a User by ID
+GET {{baseUrl}}/api/users/1
+Authorization: Bearer {{headers.Authorization}}
+Content-Type: application/json
+
+### Edit a User
+PUT {{baseUrl}}/api/users/1
+Authorization: Bearer {{headers.Authorization}}
+Content-Type: application/json
+
+{
+  "name": "New Name",
+  "email": "newemail@example.com"
+}
+
+### Delete a User
+DELETE {{baseUrl}}/api/users/1
+Authorization: Bearer {{headers.Authorization}}
+Content-Type: application/json

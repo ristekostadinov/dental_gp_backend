@@ -1,6 +1,5 @@
 package com.example.demo.services.impl;
 import com.example.demo.domains.dtos.*;
-import com.example.demo.repositories.UserRepository;
 import com.example.demo.services.AuthenticationService;
 import com.example.demo.services.JwtService;
 import com.example.demo.services.UserService;
@@ -26,7 +25,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         log.debug("Processing sign-up request: {}", request);
         try {
             log.debug("Saving user to the database from request: {}", request);
-            var savedUser = userService.save(request);
+            var savedUser = userService.create(request);
 
             log.debug("Generating JWT for user: {}", savedUser);
             var jwt = jwtService.generateToken(savedUser);

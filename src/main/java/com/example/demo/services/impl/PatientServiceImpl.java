@@ -50,12 +50,12 @@ public class PatientServiceImpl implements PatientService {
 
     @Override
     @Transactional
-    public Patient edit(Long id, Patient patient){
+    public Patient edit(Long id, PatientRegistrationDTO patient){
         var result = this.findById(id);
-        result.setFirstName(patient.getFirstName());
-        result.setLastName(patient.getLastName());
-        result.setEmail(patient.getEmail());
-        result.setPhoneNumber(patient.getPhoneNumber());
+        result.setFirstName(patient.firstName());
+        result.setLastName(patient.lastName());
+        result.setEmail(patient.email());
+        result.setPhoneNumber(patient.phoneNumber());
         return repository.save(result);
     }
 

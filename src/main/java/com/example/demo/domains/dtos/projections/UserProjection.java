@@ -9,4 +9,8 @@ public interface UserProjection {
     Long getId();
     String getUsername();
     Set<Role> getRoles();
+
+    default UserDTO toUserDTO() {
+        return new UserDTO(getId(), getUsername(), getRoles());
+    }
 }

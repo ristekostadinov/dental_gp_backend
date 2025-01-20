@@ -8,6 +8,6 @@ public interface PatientService {
     Patient save(PatientRegistrationDTO patientRegistrationDTO);
     List<Patient> findAll();
     Patient findById(Long id);
-    Patient edit(Long id, Patient patient);
+    Patient edit(Long id, PatientRegistrationDTO patient);
     void delete(Long id);
 }
