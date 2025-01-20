@@ -10,4 +10,5 @@ public interface PatientService {
     Patient findById(Long id);
     Patient edit(Long id, PatientRegistrationDTO patient);
     void delete(Long id);
+    Patient updateInstance(Long id);
 }

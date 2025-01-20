@@ -108,4 +108,11 @@ public class PatientServiceImpl implements PatientService {
                 .toList();
         repository.saveAllAndFlush(withUpdatedInsurance);
     }
+
+    @Override
+    public Patient updateInstance(Long id) {
+        Patient patient = this.findById(id);
+        patient.setInsurance(!patient.isInsurance());
+        return repository.save(patient);
+    }
 }

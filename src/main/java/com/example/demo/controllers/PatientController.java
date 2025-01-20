@@ -52,6 +52,16 @@ public class PatientController {
         }
     }
 
+    @PatchMapping("/{id}")
+    public ResponseEntity<Patient> updateInsurance(@PathVariable Long id) {
+        try {
+            Patient patient = service.updateInstance(id);
+            return new ResponseEntity<>(patient, HttpStatus.OK);
+        }catch (NoSuchElementException e){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
     @DeleteMapping("/{id}")
     public void deletePatient(@PathVariable Long id) {
         service.delete(id);
