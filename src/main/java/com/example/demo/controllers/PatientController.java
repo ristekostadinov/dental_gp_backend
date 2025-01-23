@@ -15,17 +15,17 @@ import java.util.NoSuchElementException;
 @RequestMapping("/api/patients")
 @AllArgsConstructor
 public class PatientController {
-    private final PatientService service;
+    private final PatientService patientService;
 
-    @PostMapping()
+    @PostMapping("/")
     public ResponseEntity<Patient> createPatient(@RequestBody PatientRegistrationDTO patient) {
-        return new ResponseEntity<>(service.save(patient), HttpStatus.OK);
+        return new ResponseEntity<>(patientService.save(patient), HttpStatus.OK);
     }
 
-    @GetMapping()
+    @GetMapping("/")
     public ResponseEntity<List<Patient>> getAllPatients() {
         try {
-            List<Patient> patients = service.findAll();
+            List<Patient> patients = patientService.findAll();
             return new ResponseEntity<>(patients, HttpStatus.CREATED);
         }catch (NoSuchElementException e){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -35,7 +35,7 @@ public class PatientController {
     @GetMapping("/{id}")
     public ResponseEntity<Patient> getPatient(@PathVariable Long id) {
         try {
-            Patient patient = service.findById(id);
+            Patient patient = patientService.findById(id);
             return new ResponseEntity<>(patient, HttpStatus.OK);
         }catch (NoSuchElementException e){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -45,17 +45,12 @@ public class PatientController {
     @PutMapping("/{id}")
     public ResponseEntity<Patient> updatePatient(@PathVariable Long id, @RequestBody PatientRegistrationDTO patientDTO) {
         try {
-            Patient patient = service.edit(id, patientDTO);
-            return new ResponseEntity<>(patient, HttpStatus.OK);
-        }catch (NoSuchElementException e){
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-    }
+            Patient patient = patientService.findById(id);
+            patient.setFirstName(patientDTO.firstName());
+            patient.setLastName(patientDTO.lastName());
+            patient.setEmail(patientDTO.email());
+            patient.setInsurance(patientDTO.insurance());
 
-    @PatchMapping("/{id}")
-    public ResponseEntity<Patient> updateInsurance(@PathVariable Long id) {
-        try {
-            Patient patient = service.updateInstance(id);
             return new ResponseEntity<>(patient, HttpStatus.OK);
         }catch (NoSuchElementException e){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -64,6 +59,6 @@ public class PatientController {
 
     @DeleteMapping("/{id}")
     public void deletePatient(@PathVariable Long id) {
-        service.delete(id);
+        patientService.delete(id);
     }
 }

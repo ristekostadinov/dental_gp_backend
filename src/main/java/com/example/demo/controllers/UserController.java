@@ -2,6 +2,7 @@ package com.example.demo.controllers;
 import com.example.demo.domains.User;
 import com.example.demo.domains.dtos.EditUserRequest;
 import com.example.demo.domains.dtos.UserDTO;
+import com.example.demo.domains.dtos.projections.UserProjection;
 import com.example.demo.services.UserService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -28,8 +29,9 @@ public class UserController {
         return new ResponseEntity<>(this.userService.findById(id), HttpStatus.OK);
     }
 
-    @GetMapping()
+    @GetMapping("/")
     public ResponseEntity<List<UserDTO>> listUsers() {
+        log.debug("Request to list users");
         return new ResponseEntity<>(this.userService.listAll(), HttpStatus.OK);
     }
 
