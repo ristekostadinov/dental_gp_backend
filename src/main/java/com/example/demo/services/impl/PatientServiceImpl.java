@@ -1,22 +1,17 @@
 package com.example.demo.services.impl;
 
 import com.example.demo.domains.Patient;
+import com.example.demo.domains.dtos.PatientDTO;
 import com.example.demo.domains.dtos.PatientRegistrationDTO;
+import com.example.demo.domains.dtos.projections.PatientProjection;
 import com.example.demo.exceptions.PatientNotFoundException;
 import com.example.demo.repositories.PatientRepository;
 import com.example.demo.services.PatientService;
-import jakarta.persistence.criteria.Predicate;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -26,8 +21,11 @@ public class PatientServiceImpl implements PatientService {
     private final PatientRepository repository;
 
     @Override
-    public List<Patient> findAll() {
-        return repository.findAll();
+    public List<PatientDTO> listAll() {
+        return repository.findAllPatients()
+                .stream().
+                map(PatientProjection::toPatientDTO).
+                collect(Collectors.toList());
     }
 
     @Override
@@ -60,59 +58,14 @@ public class PatientServiceImpl implements PatientService {
     }
 
     @Override
-    public void delete(Long id) {
-        this.repository.deleteById(id);
-    }
-
-    public Page<Patient> demoSpecification(String name, String lastName, String email, String phoneNumber, String insurance) {
-        Specification<Patient> specification = (root, query, cb)
-                -> {
-            List<Predicate> predicates = new ArrayList<>();
-            if (name != null || !name.isBlank()) {
-                predicates.add(cb.like(root.get("firstName"), name));
-            }
-            if (lastName != null) {
-                predicates.add(cb.like(root.get("lastName"), lastName));
-            }
-            if (email != null) {
-                predicates.add(cb.like(root.get("email"), email));
-            }
-            return cb.and(predicates.toArray(new Predicate[0]));
-        };
-        final var a =  repository.findAll(specification, Pageable.ofSize(10)); //n
-
-        /*a.forEach(it -> {
-            var b = repository.findById(it.getId()).get(); //1
-            b.setInsurance(true);
-            repository.save(b);//1
-        });*/
-
-        final Set<Long> ids = a.getContent().stream().map(Patient::getId).collect(Collectors.toSet());
-        return repository.findAll(specification, Pageable.ofSize(10));
-    }
-
-    private List<Patient> findPatientsWithOutInsurance() {
-        return repository.findPatientsByInsuranceIsFalse();
-    }
-
-    public void updateAllPatientsInsurance(){
-        //        final List<Patient> withOutInsurance = repository.findPatientsByIdIn(ids);
-        final List<Patient> withOutInsurance = findPatientsWithOutInsurance();
-
-        final List<Patient> withUpdatedInsurance = withOutInsurance.stream()
-                .map(patient -> {
-                    Patient clonedPatient = patient.clone();
-                    clonedPatient.setInsurance(true);
-                    return clonedPatient;
-                })
-                .toList();
-        repository.saveAllAndFlush(withUpdatedInsurance);
-    }
-
-    @Override
-    public Patient updateInstance(Long id) {
+    public Patient updateInsurance(Long id) {
         Patient patient = this.findById(id);
         patient.setInsurance(!patient.isInsurance());
         return repository.save(patient);
+    }
+
+    @Override
+    public void delete(Long id){
+        this.repository.deleteById(id);
     }
 }

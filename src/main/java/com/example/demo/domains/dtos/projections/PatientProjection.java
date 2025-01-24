@@ -8,6 +8,6 @@ public interface PatientProjection {
     String getLastName();
 
     default PatientDTO toPatientDTO() {
-
+        return new PatientDTO(getId(), getFirstName(), getLastName());
     }
 }

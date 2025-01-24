@@ -1,6 +1,7 @@
 package com.example.demo.controllers;
 
 import com.example.demo.domains.Patient;
+import com.example.demo.domains.dtos.PatientDTO;
 import com.example.demo.domains.dtos.PatientRegistrationDTO;
 import com.example.demo.services.PatientService;
 import lombok.AllArgsConstructor;
@@ -23,9 +24,9 @@ public class PatientController {
     }
 
     @GetMapping("/")
-    public ResponseEntity<List<Patient>> getAllPatients() {
+    public ResponseEntity<List<PatientDTO>> getAllPatients() {
         try {
-            List<Patient> patients = patientService.findAll();
+            List<PatientDTO> patients = patientService.listAll();
             return new ResponseEntity<>(patients, HttpStatus.CREATED);
         }catch (NoSuchElementException e){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);

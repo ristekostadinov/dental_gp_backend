@@ -16,8 +16,4 @@ import java.util.List;
 public class TreatmentController {
     private final TreatmentService treatmentService;
 
-    @GetMapping("/")
-    public ResponseEntity<List<Treatment>> getAllTreatments() {
-
-    }
 }
