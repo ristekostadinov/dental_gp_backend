@@ -29,7 +29,7 @@ public class UserController {
         return new ResponseEntity<>(this.userService.findById(id), HttpStatus.OK);
     }
 
-    @GetMapping("/")
+    @GetMapping
     public ResponseEntity<List<UserDTO>> listUsers() {
         log.debug("Request to list users");
         return new ResponseEntity<>(this.userService.listAll(), HttpStatus.OK);
