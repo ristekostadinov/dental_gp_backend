@@ -21,6 +21,7 @@ public class UserController {
 
     @PutMapping("/{id}")
     public ResponseEntity<User> editUser(@PathVariable Long id, @RequestBody EditUserRequest userRequest) {
+        log.debug("request for Edit User");
         return new ResponseEntity<>(this.userService.editUser(id, userRequest), HttpStatus.OK);
     }
 
@@ -31,7 +32,6 @@ public class UserController {
 
     @GetMapping
     public ResponseEntity<List<UserDTO>> listUsers() {
-        log.debug("Request to list users");
         return new ResponseEntity<>(this.userService.listAll(), HttpStatus.OK);
     }
 

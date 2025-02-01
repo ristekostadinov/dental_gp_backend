@@ -23,7 +23,7 @@ public class PatientController {
         return new ResponseEntity<>(patientService.save(patient), HttpStatus.OK);
     }
 
-    @GetMapping("/")
+    @GetMapping()
     public ResponseEntity<List<PatientDTO>> getAllPatients() {
         try {
             List<PatientDTO> patients = patientService.listAll();

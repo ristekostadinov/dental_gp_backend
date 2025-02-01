@@ -1,5 +1,6 @@
 package com.example.demo.services.impl;
 
+import com.example.demo.domains.Role;
 import com.example.demo.domains.User;
 import com.example.demo.domains.dtos.EditUserRequest;
 import com.example.demo.domains.dtos.SignUpRequest;
@@ -7,6 +8,7 @@ import com.example.demo.domains.dtos.UserDTO;
 import com.example.demo.domains.dtos.projections.UserProjection;
 import com.example.demo.exceptions.UserNotFoundException;
 import com.example.demo.repositories.UserRepository;
+import com.example.demo.services.RoleService;
 import com.example.demo.services.UserService;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
@@ -16,12 +18,14 @@ import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
 @Slf4j
 public class UserServiceImpl implements UserService {
-
+    private final RoleService roleService;
     private final UserRepository repository;
     private final PasswordEncoder passwordEncoder;
     private final static String SUPER_ADMIN = "super@admin.com";
@@ -59,14 +63,19 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public User editUser(Long id, EditUserRequest editUserRequest){
         log.info("Edit user with username {} and email {}", id, editUserRequest.email());
+        log.info("Request object {} ", editUserRequest);
         User user = this.findById(id);
-        user.setFirstName(editUserRequest.firstname());
-        user.setLastName(editUserRequest.lastname());
+        Set<Role> roles = new HashSet<>(this.roleService.findAllByIdIn(editUserRequest.rolesId()));
+        user.setFirstName(editUserRequest.firstName());
+        user.setLastName(editUserRequest.lastName());
         user.setUsername(editUserRequest.username());
         user.setEmail(editUserRequest.email());
-        user.setPassword(passwordEncoder.encode(editUserRequest.password()));
-        user.setRoles(editUserRequest.roles());
-        log.info("Edited user with username {} and email {}", id, editUserRequest.email());
+        if(!user.getPassword().equals(editUserRequest.password())){
+            user.setPassword(passwordEncoder.encode(editUserRequest.password()));
+        }
+        user.setRoles(roles);
+        log.info("Edited user with firstname {} username {} and email {}", editUserRequest.firstName(), editUserRequest.username(), editUserRequest.email());
+        log.info("User roles are {}", user.getRoles());
         return repository.save(user);
     }
 

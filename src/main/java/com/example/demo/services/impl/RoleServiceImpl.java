@@ -18,4 +18,9 @@ public class RoleServiceImpl implements RoleService {
     public List<Role> findAll() {
         return this.repository.findAllByNameNotLike("SUPER_ADMIN");
     }
+
+    @Override
+    public List<Role> findAllByIdIn(List<Long> ids) {
+        return repository.findAllByIdIn(ids);
+    }
 }

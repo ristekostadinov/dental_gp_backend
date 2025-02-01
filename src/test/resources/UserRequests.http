@@ -4,18 +4,22 @@ Authorization: Bearer {{headers.Authorization}}
 Content-Type: application/json
 
 ### Get a User by ID
-GET {{baseUrl}}/api/users/1
+GET {{baseUrl}}/api/users/4
 Authorization: Bearer {{headers.Authorization}}
 Content-Type: application/json
 
 ### Edit a User
-PUT {{baseUrl}}/api/users/1
+PUT {{baseUrl}}/api/users/4
 Authorization: Bearer {{headers.Authorization}}
 Content-Type: application/json
 
 {
-  "name": "New Name",
-  "email": "newemail@example.com"
+  "firstName": "Johny",
+  "lastName": "Doe",
+  "username": "johndoe",
+  "email": "johndoe@example.com",
+  "password": "password123",
+  "rolesId": [2, 3, 4]
 }
 
 ### Delete a User

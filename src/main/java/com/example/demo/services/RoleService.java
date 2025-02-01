@@ -7,4 +7,5 @@ import java.util.Optional;
 
 public interface RoleService {
     List<Role> findAll();
+    List<Role> findAllByIdIn(List<Long> ids);
 }
