@@ -79,7 +79,7 @@ public class AuthenticationControllerIntegrationTest extends AbstractIntegration
     void testLogOutEndpoint() throws Exception {
         SignInRequest request = new SignInRequest("testuser1@example.com", "password");
         authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(request.username(), request.password()));
+                new UsernamePasswordAuthenticationToken(request.email(), request.password()));
         mockMvc.perform(post("/api/v1/auth/logout").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
     }

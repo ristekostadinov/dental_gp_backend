@@ -1,0 +1,40 @@
+### List All patients
+GET {{baseUrl}}/api/patients
+Authorization: Bearer {{headers.Authorization}}
+Content-Type: application/json
+
+### Get a patient by ID
+GET {{baseUrl}}/api/patients/2
+Authorization: Bearer {{headers.Authorization}}
+Content-Type: application/json
+
+### Edit a patient
+PUT {{baseUrl}}/api/patients/2
+Authorization: Bearer {{headers.Authorization}}
+Content-Type: application/json
+
+
+{
+  "firstName": "John",
+  "lastName": "Doe",
+  "phoneNumber": "+1234567890",
+  "insurance": true
+}
+
+### Create a patient
+POST {{baseUrl}}/api/patients
+Authorization: Bearer {{headers.Authorization}}
+Content-Type: application/json
+
+{
+  "firstName": "John",
+  "lastName": "Doe",
+  "email": "john.doe@example.com",
+  "phoneNumber": "+1234567890",
+  "insurance": true
+}
+
+### Delete a patient
+DELETE {{baseUrl}}/api/patients/1
+Authorization: Bearer {{headers.Authorization}}
+Content-Type: application/json
