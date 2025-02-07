@@ -50,7 +50,7 @@ jobs:
         run: mvn surefire-report:report
 
       - name: Upload Test Report
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: surefire-html-report
           path: target/reports
