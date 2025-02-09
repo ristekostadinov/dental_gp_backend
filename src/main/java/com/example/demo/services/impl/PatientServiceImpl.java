@@ -2,7 +2,7 @@ package com.example.demo.services.impl;
 
 import com.example.demo.domains.Patient;
 import com.example.demo.domains.dtos.PatientDTO;
-import com.example.demo.domains.dtos.PatientRegistrationDTO;
+import com.example.demo.domains.dtos.PatientRequest;
 import com.example.demo.domains.dtos.projections.PatientProjection;
 import com.example.demo.exceptions.PatientNotFoundException;
 import com.example.demo.repositories.PatientRepository;
@@ -35,26 +35,28 @@ public class PatientServiceImpl implements PatientService {
 
     @Override
     @Transactional
-    public Patient save(PatientRegistrationDTO patientRegistrationDTO) {
-        log.info("Saving patient {}", patientRegistrationDTO);
+    public Patient save(PatientRequest patientRequest) {
+        log.info("Saving patient {}", patientRequest);
         var patient = new Patient();
-        patient.setFirstName(patientRegistrationDTO.firstName());
-        patient.setLastName(patientRegistrationDTO.lastName());
-        patient.setEmail(patientRegistrationDTO.email());
-        patient.setPhoneNumber(patientRegistrationDTO.phoneNumber());
-        patient.setInsurance(patientRegistrationDTO.insurance());
+        patient.setFirstName(patientRequest.firstName());
+        patient.setLastName(patientRequest.lastName());
+        patient.setEmail(patientRequest.email());
+        patient.setPhoneNumber(patientRequest.phoneNumber());
+        patient.setInsurance(patientRequest.insurance());
         return repository.save(patient);
     }
 
     @Override
     @Transactional
-    public Patient edit(Long id, PatientRegistrationDTO patient){
-        var result = this.findById(id);
-        result.setFirstName(patient.firstName());
-        result.setLastName(patient.lastName());
-        result.setEmail(patient.email());
-        result.setPhoneNumber(patient.phoneNumber());
-        return repository.save(result);
+    public Patient edit(Long id, PatientRequest patientRequest){
+        log.debug("Updating patient {}", patientRequest);
+        Patient patient = this.findById(id);
+        patient.setFirstName(patientRequest.firstName());
+        patient.setLastName(patientRequest.lastName());
+        patient.setEmail(patientRequest.email());
+        patient.setPhoneNumber(patientRequest.phoneNumber());
+        patient.setInsurance(patientRequest.insurance());
+        return repository.save(patient);
     }
 
     @Override

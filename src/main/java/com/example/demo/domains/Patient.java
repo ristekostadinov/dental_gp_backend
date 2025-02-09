@@ -8,7 +8,7 @@ import java.io.Serializable;
 @Entity
 @Table(name = "patients")
 @Data
-public class Patient implements Cloneable {
+public class Patient{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="id")
@@ -28,14 +28,4 @@ public class Patient implements Cloneable {
 
     @Column(name = "insurance")
     private boolean insurance;
-
-    @Override
-    public Patient clone() {
-        try {
-            return new Patient();
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-        return null;
-    }
 }
