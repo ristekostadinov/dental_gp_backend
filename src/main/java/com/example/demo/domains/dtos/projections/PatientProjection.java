@@ -6,8 +6,9 @@ public interface PatientProjection {
     Long getId();
     String getFirstName();
     String getLastName();
+    boolean getInsurance();
 
     default PatientDTO toPatientDTO() {
-        return new PatientDTO(getId(), getFirstName(), getLastName());
+        return new PatientDTO(getId(), getFirstName(), getLastName(), getInsurance());
     }
 }

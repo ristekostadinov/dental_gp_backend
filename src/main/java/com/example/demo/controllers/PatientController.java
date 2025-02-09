@@ -2,7 +2,7 @@ package com.example.demo.controllers;
 
 import com.example.demo.domains.Patient;
 import com.example.demo.domains.dtos.PatientDTO;
-import com.example.demo.domains.dtos.PatientRegistrationDTO;
+import com.example.demo.domains.dtos.PatientRequest;
 import com.example.demo.services.PatientService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -18,9 +18,9 @@ import java.util.NoSuchElementException;
 public class PatientController {
     private final PatientService patientService;
 
-    @PostMapping("/")
-    public ResponseEntity<Patient> createPatient(@RequestBody PatientRegistrationDTO patient) {
-        return new ResponseEntity<>(patientService.save(patient), HttpStatus.OK);
+    @PostMapping()
+    public ResponseEntity<Patient> createPatient(@RequestBody PatientRequest request) {
+        return new ResponseEntity<>(patientService.save(request), HttpStatus.OK);
     }
 
     @GetMapping()
@@ -44,7 +44,7 @@ public class PatientController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Patient> updatePatient(@PathVariable Long id, @RequestBody PatientRegistrationDTO patientDTO) {
+    public ResponseEntity<Patient> updatePatient(@PathVariable Long id, @RequestBody PatientRequest patientDTO) {
         try {
             Patient patient = patientService.findById(id);
             patient.setFirstName(patientDTO.firstName());

@@ -13,6 +13,6 @@ import java.util.List;
 
 @Repository
 public interface PatientRepository extends JpaRepository<Patient, Long>, JpaSpecificationExecutor<Patient> {
-    @Query("select p.id as id, p.firstName as firstName, p.lastName as lastName from Patient p")
+    @Query("select p.id as id, p.firstName as firstName, p.lastName as lastName, p.insurance as insurance from Patient p")
     List<PatientProjection> findAllPatients();
 }
