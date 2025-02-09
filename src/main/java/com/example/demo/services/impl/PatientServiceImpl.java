@@ -54,6 +54,7 @@ public class PatientServiceImpl implements PatientService {
         result.setLastName(patient.lastName());
         result.setEmail(patient.email());
         result.setPhoneNumber(patient.phoneNumber());
+        result.setInsurance(patient.insurance());
         return repository.save(result);
     }
 
