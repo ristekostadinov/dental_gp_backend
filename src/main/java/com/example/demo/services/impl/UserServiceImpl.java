@@ -2,9 +2,11 @@ package com.example.demo.services.impl;
 
 import com.example.demo.domains.Role;
 import com.example.demo.domains.User;
+import com.example.demo.domains.dtos.DoctorDTO;
 import com.example.demo.domains.dtos.EditUserRequest;
 import com.example.demo.domains.dtos.SignUpRequest;
 import com.example.demo.domains.dtos.UserDTO;
+import com.example.demo.domains.dtos.projections.DoctorProjection;
 import com.example.demo.domains.dtos.projections.UserProjection;
 import com.example.demo.exceptions.UserNotFoundException;
 import com.example.demo.repositories.UserRepository;
@@ -82,5 +84,14 @@ public class UserServiceImpl implements UserService {
     public void delete(Long id){
         log.info("Delete user with username {}", id);
         this.repository.deleteById(id);
+    }
+
+    @Override
+    public List<DoctorDTO> findAllDoctors() {
+        return this.repository
+                .findAllDoctors()
+                .stream()
+                .map(DoctorProjection::toDTO)
+                .toList();
     }
 }
