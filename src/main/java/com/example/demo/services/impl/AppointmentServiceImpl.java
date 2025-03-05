@@ -31,10 +31,6 @@ public class AppointmentServiceImpl implements AppointmentService {
                 .orElseThrow(() ->  new AppointmentNotFoundException("Appointment with id " + id + " not found"));
     }
 
-    @Override
-    public List<Appointment> findAllByDate(ZonedDateTime date) {
-        return repository.findAllByDate(date);
-    }
 
     @Override
     public void delete(Long id) {

@@ -5,15 +5,14 @@ import lombok.Data;
 
 import java.time.ZonedDateTime;
 
-@Entity
-@Table(name = "appointments")
-@Data
-public class Appointment {
-    enum Status {AVAILABLE, BOOKED, CANCELLED}
 
+@Entity
+@Table(name="bookings")
+@Data
+public class Booking {
+    enum Status{CREATED, IN_PROGRESS, BOOKED, CANCELLED, REALIZED}
     @Id
-    @GeneratedValue( strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name="date_time_from")
@@ -21,12 +20,6 @@ public class Appointment {
 
     @Column(name="date_time_to")
     private ZonedDateTime to;
-
-    @ManyToOne
-    private Patient patient;
-
-    @ManyToOne
-    private Resource resource;
 
     @Column(name = "status")
     @Enumerated(EnumType.STRING)

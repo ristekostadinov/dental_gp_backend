@@ -7,5 +7,4 @@ import java.time.ZonedDateTime;
 import java.util.List;
 
 public interface AppointmentRepository extends JpaRepository<Appointment, Long> {
-    List<Appointment> findAllByDate(ZonedDateTime date);
 }

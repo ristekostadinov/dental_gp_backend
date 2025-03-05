@@ -6,9 +6,10 @@ import java.time.ZonedDateTime;
 
 public interface AppointmentProjection {
     Long getId();
-    ZonedDateTime getDate();
+    ZonedDateTime getFrom();
+    ZonedDateTime getTo();
 
     default AppointmentDTO toDTO(){
-        return new AppointmentDTO(getId(), getDate());
+        return new AppointmentDTO(getId(), getFrom(), getTo());
     }
 }
