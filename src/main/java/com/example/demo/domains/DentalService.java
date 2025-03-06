@@ -1,20 +1,13 @@
 package com.example.demo.domains;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Entity
-@Table(name = "resources")
+@Table(name = "services")
 @Data
-public class Resource {
-    @Id
+public class DentalService {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
+    @Id
     private Long id;
-
-    @Column(name = "name")
-    private String name;
-
-
 }
