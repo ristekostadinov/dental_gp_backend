@@ -8,6 +8,4 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.List;
 
 public interface LocationRepository extends JpaRepository<Location, Long> {
-    @Query()
-    List<LocationDTO> findAllLocations();
 }
