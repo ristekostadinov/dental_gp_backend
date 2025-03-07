@@ -5,10 +5,10 @@ import java.time.ZonedDateTime;
 
 public interface BookingProjection {
     Long getId();
-    ZonedDateTime getFrom();
-    ZonedDateTime getTo();
+    ZonedDateTime getFromTimestamp();
+    ZonedDateTime getToTimestamp();
 
-    default BookingDTO toDTO(){
-        return new BookingDTO(getId(), getFrom(), getTo());
+    default BookingDTO toBookingDTO(){
+        return new BookingDTO(getId(), getFromTimestamp(), getToTimestamp());
     }
 }

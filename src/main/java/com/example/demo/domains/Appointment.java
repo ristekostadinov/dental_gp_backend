@@ -1,5 +1,6 @@
 package com.example.demo.domains;
 
+import com.example.demo.domains.enums.AppointmentStatus;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -9,8 +10,6 @@ import java.time.ZonedDateTime;
 @Table(name = "appointments")
 @Data
 public class Appointment {
-    enum Status {AVAILABLE, BOOKED, CANCELLED}
-
     @Id
     @GeneratedValue( strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -30,5 +29,5 @@ public class Appointment {
 
     @Column(name = "status")
     @Enumerated(EnumType.STRING)
-    private Status status;
+    private AppointmentStatus status;
 }
