@@ -1,6 +1,7 @@
 package com.example.demo.controllers;
 
 import com.example.demo.domains.Resource;
+import com.example.demo.domains.dtos.ResourceDTO;
 import com.example.demo.domains.dtos.ResourceRequest;
 import com.example.demo.services.ResourceService;
 import lombok.AllArgsConstructor;
@@ -20,9 +21,9 @@ public class ResourceController {
     private final ResourceService service;
 
     @GetMapping
-    public ResponseEntity<List<Resource>> getAllResources() {
+    public ResponseEntity<List<ResourceDTO>> getAllResources() {
         try{
-            List<Resource> resources =  service.findAll();
+            List<ResourceDTO> resources =  service.findAll();
             return new ResponseEntity<>(resources, HttpStatus.CREATED);
         }catch (NoSuchElementException ex){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);

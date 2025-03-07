@@ -1,6 +1,7 @@
 package com.example.demo.services.impl;
 
 import com.example.demo.domains.Resource;
+import com.example.demo.domains.dtos.ResourceDTO;
 import com.example.demo.domains.dtos.ResourceRequest;
 import com.example.demo.exceptions.ResourceNotFoundException;
 import com.example.demo.repositories.ResourceRepository;
@@ -20,6 +21,8 @@ public class ResourceServiceImpl implements ResourceService {
     public Resource save(ResourceRequest resourceRequest) {
         Resource resource = new Resource();
         resource.setName(resourceRequest.name());
+        resource.setDescription(resourceRequest.description());
+        resource.setAddress(resourceRequest.address());
         return repository.save(resource);
     }
 
@@ -30,6 +33,8 @@ public class ResourceServiceImpl implements ResourceService {
                 .findById(id)
                 .orElseThrow(()-> new ResourceNotFoundException("Resource with id: " + id + " not found"));
         resource.setName(resourceRequest.name());
+        resource.setDescription(resourceRequest.description());
+        resource.setAddress(resourceRequest.address());
         return repository.save(resource);
     }
 
@@ -45,7 +50,7 @@ public class ResourceServiceImpl implements ResourceService {
     }
 
     @Override
-    public List<Resource> findAll() {
-        return this.repository.findAll();
+    public List<ResourceDTO> findAll() {
+        return List.of();
     }
 }
