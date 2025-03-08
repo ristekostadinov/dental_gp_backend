@@ -1,5 +1,5 @@
 package com.example.demo.domains;
-
+import com.example.demo.domains.enums.BookingStatus;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -10,18 +10,18 @@ import java.time.ZonedDateTime;
 @Table(name="bookings")
 @Data
 public class Booking {
-    enum Status{CREATED, IN_PROGRESS, BOOKED, CANCELLED, REALIZED}
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name="date_time_from")
-    private ZonedDateTime from;
+    private ZonedDateTime fromTimestamp;
 
     @Column(name="date_time_to")
-    private ZonedDateTime to;
+    private ZonedDateTime toTimestamp;
+
 
     @Column(name = "status")
     @Enumerated(EnumType.STRING)
-    private Status status;
+    private BookingStatus status;
 }
