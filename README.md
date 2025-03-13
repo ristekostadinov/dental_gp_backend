@@ -1,6 +1,6 @@
 # dental_gp_backend
 
 ### Users
-|username|password|
-|--|--|
-|super_admin|password123|
+| email           |username|password|
+|-----------------|--|--|
+| super@admin.com | super_admin |password123|
