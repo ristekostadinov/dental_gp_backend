@@ -10,4 +10,7 @@ public class DentalService {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     private Long id;
+
+    @Column(name="name")
+    private String name;
 }
