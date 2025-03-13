@@ -21,7 +21,7 @@ public class CategoryController {
     public ResponseEntity<Page<CategoryDTO>> getAllCategories(@RequestParam int page, @RequestParam int size) {
         try{
             Page<CategoryDTO> categories = this.service.findAll(page, size);
-            return new ResponseEntity<>(categories, HttpStatus.CREATED);
+            return new ResponseEntity<>(categories, HttpStatus.OK);
         }catch (NoSuchElementException e){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
@@ -29,11 +29,7 @@ public class CategoryController {
 
     @PostMapping()
     public ResponseEntity<Category> createCategory(@RequestBody CategoryRequest categoryRequest) {
-        try{
-            return new ResponseEntity<>(this.service.save(categoryRequest), HttpStatus.OK);
-        }catch (NoSuchElementException e){
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+        return new ResponseEntity<>(this.service.save(categoryRequest), HttpStatus.CREATED);
     }
 
     @GetMapping("/{id}")
