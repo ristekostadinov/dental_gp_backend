@@ -1,5 +1,6 @@
 package riste.kostadinov.graduation.project.services.impl;
 
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -17,6 +18,7 @@ import riste.kostadinov.graduation.project.services.DentalServiceManager;
 public class DentalServiceManagerImpl implements DentalServiceManager {
     private final DentalServiceRepository repository;
 
+    @Transactional
     @Override
     public DentalService save(DentalServiceRequest dentalServiceRequest) {
         DentalService dentalService = new DentalService();
@@ -24,6 +26,7 @@ public class DentalServiceManagerImpl implements DentalServiceManager {
         return this.repository.save(dentalService);
     }
 
+    @Transactional
     @Override
     public DentalService edit(Long id, DentalServiceRequest dentalServiceRequest) {
         DentalService dentalService = this.findById(id);
