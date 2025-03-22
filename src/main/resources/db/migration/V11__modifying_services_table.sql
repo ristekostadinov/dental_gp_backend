@@ -1,0 +1,1 @@
+alter table services drop column price;
