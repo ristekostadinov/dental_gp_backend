@@ -1,5 +1,8 @@
 package riste.kostadinov.graduation.project.services.impl;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import riste.kostadinov.graduation.project.domains.Resource;
 import riste.kostadinov.graduation.project.domains.dtos.ResourceDTO;
 import riste.kostadinov.graduation.project.domains.dtos.ResourceRequest;
@@ -45,12 +48,14 @@ public class ResourceServiceImpl implements ResourceService {
 
     @Override
     public Resource findById(Long id) {
-        return repository.findById(id)
+        return this.repository.findById(id)
                 .orElseThrow(()-> new ResourceNotFoundException("Resource with id: "+id+"doesn't exist"));
     }
 
     @Override
-    public List<ResourceDTO> findAll() {
-        return List.of();
+    public Page<ResourceDTO> findAll(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return this.repository.findAll(pageable)
+                .map(resource -> new ResourceDTO(resource.getId(),resource.getName(), resource.getAddress(), resource.getDescription()));
     }
 }
