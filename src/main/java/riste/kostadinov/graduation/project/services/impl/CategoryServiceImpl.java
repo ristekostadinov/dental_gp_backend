@@ -33,11 +33,10 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public Page<CategoryDTO> findAll(int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
-        Page<CategoryDTO> categories = this.repository
+        return this.repository
                 .findAll(pageable)
                 .map(category-> new CategoryDTO(category.getId(), category.getName()));
-        log.info(categories.toString());
-        return categories;
+
     }
 
 

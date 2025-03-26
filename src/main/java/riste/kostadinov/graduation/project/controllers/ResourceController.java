@@ -1,5 +1,6 @@
 package riste.kostadinov.graduation.project.controllers;
 
+import org.springframework.data.domain.Page;
 import riste.kostadinov.graduation.project.domains.Resource;
 import riste.kostadinov.graduation.project.domains.dtos.ResourceDTO;
 import riste.kostadinov.graduation.project.domains.dtos.ResourceRequest;
@@ -19,9 +20,9 @@ public class ResourceController {
     private final ResourceService service;
 
     @GetMapping
-    public ResponseEntity<List<ResourceDTO>> getAllResources() {
+    public ResponseEntity<Page<ResourceDTO>> getAllResources(@RequestParam int page, @RequestParam int size) {
         try{
-            List<ResourceDTO> resources =  service.findAll();
+            Page<ResourceDTO> resources =  service.findAll(page, size);
             return new ResponseEntity<>(resources, HttpStatus.CREATED);
         }catch (NoSuchElementException ex){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);

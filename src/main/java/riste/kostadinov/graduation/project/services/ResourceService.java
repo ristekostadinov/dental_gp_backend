@@ -1,5 +1,6 @@
 package riste.kostadinov.graduation.project.services;
 
+import org.springframework.data.domain.Page;
 import riste.kostadinov.graduation.project.domains.Resource;
 import riste.kostadinov.graduation.project.domains.dtos.ResourceDTO;
 import riste.kostadinov.graduation.project.domains.dtos.ResourceRequest;
@@ -11,5 +12,5 @@ public interface ResourceService {
     Resource edit(Long id, ResourceRequest resourceRequest);
     void delete(Long id);
     Resource findById(Long id);
-    List<ResourceDTO> findAll();
+    Page<ResourceDTO> findAll(int page, int size);
 }
