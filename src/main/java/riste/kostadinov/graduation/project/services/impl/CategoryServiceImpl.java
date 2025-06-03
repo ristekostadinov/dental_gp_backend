@@ -15,6 +15,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -39,6 +40,11 @@ public class CategoryServiceImpl implements CategoryService {
 
     }
 
+    @Override
+    public List<CategoryDTO> findAll(){
+        return this.repository.
+                findAll().stream().map(category -> new CategoryDTO(category.getId(), category.getName())).collect(Collectors.toList());
+    }
 
     @Override
     public Category findById(Long id) {

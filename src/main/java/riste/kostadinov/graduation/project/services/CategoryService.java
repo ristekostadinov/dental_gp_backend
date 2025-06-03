@@ -10,6 +10,7 @@ import java.util.List;
 public interface CategoryService {
     Category save(CategoryRequest categoryRequest);
     Page<CategoryDTO> findAll(int page, int size);
+    List<CategoryDTO> findAll();
     Category findById(Long id);
     void delete(Long id);
     Category edit(Long id, CategoryRequest categoryRequest);

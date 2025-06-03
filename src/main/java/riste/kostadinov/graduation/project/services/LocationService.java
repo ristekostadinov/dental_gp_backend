@@ -9,4 +9,5 @@ import java.util.List;
 public interface LocationService {
     Page<LocationDTO> findAll(int page, int size);
     Location findById(Long id);
+    List<LocationDTO> findAllNonPaginated();
 }

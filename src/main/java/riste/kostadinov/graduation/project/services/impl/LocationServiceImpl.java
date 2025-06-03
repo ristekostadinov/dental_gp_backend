@@ -1,6 +1,7 @@
 package riste.kostadinov.graduation.project.services.impl;
 
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -16,6 +17,7 @@ import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
+@Slf4j
 public class LocationServiceImpl implements LocationService {
     private final LocationRepository repository;
 
@@ -31,5 +33,14 @@ public class LocationServiceImpl implements LocationService {
         return this.repository
                 .findById(id)
                 .orElseThrow(()-> new LocationNotFoundException("Location with id " + id + " not found"));
+    }
+
+    @Override
+    public List<LocationDTO> findAllNonPaginated() {
+        return this.repository
+                .findAll()
+                .stream()
+                .map(location -> new LocationDTO(location.getId(), location.getName()))
+                .collect(Collectors.toList());
     }
 }

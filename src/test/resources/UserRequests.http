@@ -26,3 +26,17 @@ Content-Type: application/json
 DELETE {{baseUrl}}/api/users/1
 Authorization: Bearer {{headers.Authorization}}
 Content-Type: application/json
+
+### Inserting a User
+POST {{baseUrl}}/api/users
+Authorization: Bearer {{headers.Authorization}}
+Content-Type: application/json
+
+{
+  "firstName": "Johny",
+  "lastName": "Doe",
+  "username": "johndoe",
+  "email": "johndoe@example.com",
+  "password": "password123",
+  "rolesId": [2, 3, 4]
+}
