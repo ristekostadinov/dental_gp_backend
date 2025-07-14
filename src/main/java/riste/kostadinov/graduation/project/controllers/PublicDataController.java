@@ -4,11 +4,11 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import riste.kostadinov.graduation.project.domains.DentalService;
 import riste.kostadinov.graduation.project.domains.Resource;
 import riste.kostadinov.graduation.project.domains.dtos.CategoryDTO;
 import riste.kostadinov.graduation.project.domains.dtos.DentalServiceDTO;
 import riste.kostadinov.graduation.project.domains.dtos.LocationDTO;
+import riste.kostadinov.graduation.project.domains.dtos.ResourceServiceDTO;
 import riste.kostadinov.graduation.project.services.PublicDataService;
 
 import java.util.List;
@@ -29,9 +29,9 @@ public class PublicDataController {
         }
     }
 
-    @GetMapping("/resources")
-    public ResponseEntity<Resource> getResources(){
-        return new ResponseEntity<>(null, HttpStatus.OK);
+    @GetMapping("locations/{locationId}/services/{serviceId}/resources")
+    public ResponseEntity<List<ResourceServiceDTO>> getResources(@PathVariable Long locationId, @PathVariable Long serviceId) {
+        return new ResponseEntity<>(this.publicDataService.listResources(locationId, serviceId), HttpStatus.OK);
     }
 
     @GetMapping("/categories")
@@ -56,4 +56,13 @@ public class PublicDataController {
 
     }
 
+    @GetMapping("/services/{serviceId}")
+    public ResponseEntity<DentalServiceDTO> getService(@PathVariable Long serviceId){
+        try{
+            DentalServiceDTO dentalServiceDTO = this.publicDataService.getDentalService(serviceId);
+            return new ResponseEntity<>(dentalServiceDTO, HttpStatus.OK);
+        }catch (NoSuchElementException e){
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        }
+    }
 }
