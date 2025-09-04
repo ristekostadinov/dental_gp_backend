@@ -3,7 +3,6 @@ package riste.kostadinov.graduation.project.services.impl;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.repository.Query;
 import riste.kostadinov.graduation.project.domains.Resource;
 import riste.kostadinov.graduation.project.domains.dtos.ResourceDTO;
 import riste.kostadinov.graduation.project.domains.dtos.ResourceRequest;
@@ -65,7 +64,7 @@ public class ResourceServiceImpl implements ResourceService {
     @Override
     public List<ResourceServiceDTO> findAllResources(Long locationId, Long serviceId) {
         return this.repository
-                .findResourceServiceProjectionByLocationIdAndService(locationId, serviceId)
+                .findResourcesWithLocationIdAndServiceId(locationId, serviceId)
                 .stream().map(ResourceServiceProjection::toDTO)
                 .toList();
     }

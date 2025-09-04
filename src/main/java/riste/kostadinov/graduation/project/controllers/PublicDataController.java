@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import riste.kostadinov.graduation.project.domains.Resource;
 import riste.kostadinov.graduation.project.domains.dtos.CategoryDTO;
 import riste.kostadinov.graduation.project.domains.dtos.DentalServiceDTO;
 import riste.kostadinov.graduation.project.domains.dtos.LocationDTO;
@@ -42,7 +41,6 @@ public class PublicDataController {
         }catch (NoSuchElementException e){
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         }
-
     }
 
     @GetMapping("/locations")
@@ -53,7 +51,6 @@ public class PublicDataController {
         }catch (NoSuchElementException e){
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         }
-
     }
 
     @GetMapping("/services/{serviceId}")

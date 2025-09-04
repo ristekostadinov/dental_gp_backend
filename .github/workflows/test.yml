@@ -43,6 +43,9 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-maven-
 
+      - name: Flyway Clean + Migrate
+        run: mvn flyway:clean flyway:migrate -Dspring.profiles.active=test
+
       - name: Install Dependencies and Run Tests
         run: mvn clean test -Dspring.profiles.active=test
 
