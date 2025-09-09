@@ -1,4 +1,4 @@
-alter table resources drop column location_id;
+alter table resources drop column if exists location_id;
 alter table resources add column location_id bigint references locations(id);
 
 create table if not exists resource_service(
