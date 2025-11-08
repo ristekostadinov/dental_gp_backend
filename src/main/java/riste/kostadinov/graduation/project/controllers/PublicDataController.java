@@ -1,15 +1,15 @@
 package riste.kostadinov.graduation.project.controllers;
 
 import lombok.AllArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import riste.kostadinov.graduation.project.domains.dtos.CategoryDTO;
-import riste.kostadinov.graduation.project.domains.dtos.DentalServiceDTO;
-import riste.kostadinov.graduation.project.domains.dtos.LocationDTO;
-import riste.kostadinov.graduation.project.domains.dtos.ResourceServiceDTO;
+import riste.kostadinov.graduation.project.domains.Resource;
+import riste.kostadinov.graduation.project.domains.dtos.*;
 import riste.kostadinov.graduation.project.services.PublicDataService;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -31,6 +31,16 @@ public class PublicDataController {
     @GetMapping("locations/{locationId}/services/{serviceId}/resources")
     public ResponseEntity<List<ResourceServiceDTO>> getResources(@PathVariable Long locationId, @PathVariable Long serviceId) {
         return new ResponseEntity<>(this.publicDataService.listResources(locationId, serviceId), HttpStatus.OK);
+    }
+
+    @GetMapping("resources/{resourceId}")
+    public ResponseEntity<Resource> getResource(@PathVariable Long resourceId) {
+        return new ResponseEntity<>(this.publicDataService.getResourceById(resourceId), HttpStatus.OK);
+    }
+
+    @GetMapping("/appointments/booked-slots")
+    public ResponseEntity<List<AppointmentDTO>> getAppointments(@RequestParam("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date, @RequestParam Long resourceId) {
+        return new ResponseEntity<>(this.publicDataService.getBookedAppointments(date, resourceId), HttpStatus.OK);
     }
 
     @GetMapping("/categories")

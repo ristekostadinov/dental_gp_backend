@@ -22,15 +22,18 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final JwtService jwtService;
     private final UserDetailsServiceImpl userDetailsService;
 
-    @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+    protected void doFilterInternal(HttpServletRequest request,
+                                    HttpServletResponse response,
+                                    FilterChain filterChain)
+            throws ServletException, IOException {
+
         final String authHeader = request.getHeader("Authorization");
         final String jwt;
         final String userEmail;
 
-        // Skip JWT processing for the permitted routes
+        // Skip JWT processing for public routes
         String requestURI = request.getRequestURI();
-        if (requestURI.startsWith("/api/v1/auth") || requestURI.startsWith("/api/public")) {
+        if ("OPTIONS".equalsIgnoreCase(request.getMethod()) || requestURI.startsWith("/api/v1/auth") || requestURI.startsWith("/api/public")) {
             filterChain.doFilter(request, response);
             return;
         }
@@ -42,6 +45,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         jwt = authHeader.substring(7);
         userEmail = jwtService.extractUsername(jwt);
+
         if (StringUtils.isNotEmpty(userEmail) && SecurityContextHolder.getContext().getAuthentication() == null) {
             UserDetails userDetails = userDetailsService.userDetailsService().loadUserByUsername(userEmail);
             if (jwtService.isTokenValid(jwt, userDetails)) {
@@ -51,6 +55,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 SecurityContextHolder.getContext().setAuthentication(authToken);
             }
         }
+
+        // ⚡ Critical: Continue the filter chain!
         filterChain.doFilter(request, response);
     }
 }

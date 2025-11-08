@@ -24,5 +24,9 @@ public class DentalService {
     )
     private List<Location> locations;
 
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "category_id")
+    private Category category;
+
 
 }

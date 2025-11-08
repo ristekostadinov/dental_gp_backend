@@ -1,11 +1,11 @@
 package riste.kostadinov.graduation.project.services;
 
-import riste.kostadinov.graduation.project.domains.dtos.CategoryDTO;
-import riste.kostadinov.graduation.project.domains.dtos.DentalServiceDTO;
-import riste.kostadinov.graduation.project.domains.dtos.LocationDTO;
-import riste.kostadinov.graduation.project.domains.dtos.ResourceServiceDTO;
+import riste.kostadinov.graduation.project.domains.Resource;
+import riste.kostadinov.graduation.project.domains.dtos.*;
 
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 public interface PublicDataService {
     List<DentalServiceDTO> listDentalServices(Long categoryId, Long locationId);
@@ -13,4 +13,6 @@ public interface PublicDataService {
     List<CategoryDTO> listCategories();
     List<LocationDTO> listLocations();
     DentalServiceDTO getDentalService(Long dentalServiceId);
+    List<AppointmentDTO> getBookedAppointments(LocalDate date,  Long resourceId);
+    Resource getResourceById(Long resourceId);
 }

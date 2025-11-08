@@ -4,6 +4,7 @@ import riste.kostadinov.graduation.project.domains.dtos.PatientDTO;
 import riste.kostadinov.graduation.project.domains.dtos.PatientRequest;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface PatientService {
     Patient save(PatientRequest patientRequest);
@@ -12,4 +13,5 @@ public interface PatientService {
     Patient edit(Long id, PatientRequest patient);
     void delete(Long id);
     Patient updateInsurance(Long id);
+    Patient findByEmail(String email);
 }

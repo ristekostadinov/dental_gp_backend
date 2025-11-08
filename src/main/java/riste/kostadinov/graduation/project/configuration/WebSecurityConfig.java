@@ -1,4 +1,5 @@
 package riste.kostadinov.graduation.project.configuration;
+import org.springframework.http.HttpMethod;
 import riste.kostadinov.graduation.project.services.impl.UserDetailsServiceImpl;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
@@ -58,6 +59,7 @@ public class WebSecurityConfig {
                     return config;
                 }))
                 .authorizeHttpRequests(requests-> requests
+                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                         .requestMatchers("/api/v1/auth/**").permitAll()
                         .requestMatchers("/api/public/**").permitAll()
                         .anyRequest().authenticated()

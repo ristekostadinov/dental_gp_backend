@@ -9,6 +9,7 @@ import riste.kostadinov.graduation.project.domains.dtos.UserDTO;
 import riste.kostadinov.graduation.project.domains.dtos.projections.DoctorProjection;
 import riste.kostadinov.graduation.project.domains.dtos.projections.UserProjection;
 import riste.kostadinov.graduation.project.exceptions.UserNotFoundException;
+import riste.kostadinov.graduation.project.exceptions.UserAlreadyExistException;
 import riste.kostadinov.graduation.project.repositories.UserRepository;
 import riste.kostadinov.graduation.project.services.RoleService;
 import riste.kostadinov.graduation.project.services.UserService;
@@ -34,6 +35,9 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public User create(SignUpRequest request){
         log.info("Create user with username  {} and email {}", request.username(), request.email());
+        if(this.repository.findByEmail(request.email()).isPresent()){
+            throw new UserAlreadyExistException("User with email "+request.email()+" already exists");
+        }
         var user = new User();
         user.setFirstName(request.firstName());
         user.setLastName(request.lastName());

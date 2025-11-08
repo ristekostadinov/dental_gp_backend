@@ -1,0 +1,1 @@
+alter table if exists appointments add column service_id bigint references services(id);

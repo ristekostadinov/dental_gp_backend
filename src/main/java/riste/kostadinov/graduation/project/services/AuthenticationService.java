@@ -8,6 +8,9 @@ public interface AuthenticationService {
 
     JwtAuthenticationResponse signIn(SignInRequest request);
 
+    PatientAuthResponse signUpPatient(PatientRequest patientRequest);
+    PatientAuthResponse signInPatient(SignInRequest patientRequest);
+
     Boolean forgot(ForgotRequest request);
 
     UserDTO changePassword(ChangePasswordRequest request);

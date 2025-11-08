@@ -1,5 +1,7 @@
 package riste.kostadinov.graduation.project.domains;
 
+import org.hibernate.annotations.Type;
+import riste.kostadinov.graduation.project.configuration.AppointmentStatusConverter;
 import riste.kostadinov.graduation.project.domains.enums.AppointmentStatus;
 import jakarta.persistence.*;
 import lombok.Data;
@@ -27,7 +29,11 @@ public class Appointment {
     @ManyToOne
     private Resource resource;
 
-    @Column(name = "status")
     @Enumerated(EnumType.STRING)
+    @Column(name = "status") // This points to the custom type handler
     private AppointmentStatus status;
+
+    @ManyToOne()
+    @JoinColumn(name="service_id")
+    private DentalService dentalService;
 }

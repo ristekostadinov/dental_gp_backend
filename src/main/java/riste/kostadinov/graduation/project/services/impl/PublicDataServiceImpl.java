@@ -5,13 +5,15 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import riste.kostadinov.graduation.project.domains.DentalService;
 import riste.kostadinov.graduation.project.domains.Resource;
-import riste.kostadinov.graduation.project.domains.dtos.CategoryDTO;
-import riste.kostadinov.graduation.project.domains.dtos.DentalServiceDTO;
-import riste.kostadinov.graduation.project.domains.dtos.LocationDTO;
-import riste.kostadinov.graduation.project.domains.dtos.ResourceServiceDTO;
+import riste.kostadinov.graduation.project.domains.dtos.*;
 import riste.kostadinov.graduation.project.services.*;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -21,6 +23,7 @@ public class PublicDataServiceImpl implements PublicDataService {
     private final DentalServiceManager dentalServiceManager;
     private final ResourceService resourceService;
     private final CategoryService categoryService;
+    private final AppointmentService appointmentService;
 
 
     @Override
@@ -32,6 +35,18 @@ public class PublicDataServiceImpl implements PublicDataService {
     public DentalServiceDTO getDentalService(Long dentalServiceId){
         DentalService dentalService =  this.dentalServiceManager.findById(dentalServiceId);
         return new DentalServiceDTO(dentalService.getId(), dentalService.getName());
+    }
+
+    @Override
+    public List<AppointmentDTO> getBookedAppointments(LocalDate date, Long resourceId) {
+        ZonedDateTime from = ZonedDateTime.of(date, LocalTime.of(7, 0), ZoneId.of("Europe/Skopje"));
+        ZonedDateTime to = ZonedDateTime.of(date, LocalTime.of(21,0), ZoneId.of("Europe/Skopje"));
+        return this.appointmentService.getBookedAppointments(from, to, resourceId);
+    }
+
+    @Override
+    public Resource getResourceById(Long resourceId) {
+        return this.resourceService.findById(resourceId);
     }
 
     @Override
