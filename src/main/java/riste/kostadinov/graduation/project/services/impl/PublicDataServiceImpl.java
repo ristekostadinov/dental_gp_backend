@@ -8,10 +8,7 @@ import riste.kostadinov.graduation.project.domains.Resource;
 import riste.kostadinov.graduation.project.domains.dtos.*;
 import riste.kostadinov.graduation.project.services.*;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
+import java.time.*;
 import java.util.List;
 import java.util.Optional;
 
@@ -39,8 +36,8 @@ public class PublicDataServiceImpl implements PublicDataService {
 
     @Override
     public List<AppointmentDTO> getBookedAppointments(LocalDate date, Long resourceId) {
-        ZonedDateTime from = ZonedDateTime.of(date, LocalTime.of(7, 0), ZoneId.of("Europe/Skopje"));
-        ZonedDateTime to = ZonedDateTime.of(date, LocalTime.of(21,0), ZoneId.of("Europe/Skopje"));
+        OffsetDateTime from = OffsetDateTime.of(date, LocalTime.of(7,0), ZoneOffset.UTC);
+        OffsetDateTime to = OffsetDateTime.of(date, LocalTime.of(21,0), ZoneOffset.UTC);
         return this.appointmentService.getBookedAppointments(from, to, resourceId);
     }
 

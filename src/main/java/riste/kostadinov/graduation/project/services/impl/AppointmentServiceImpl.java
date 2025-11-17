@@ -8,7 +8,9 @@ import riste.kostadinov.graduation.project.domains.DentalService;
 import riste.kostadinov.graduation.project.domains.Resource;
 import riste.kostadinov.graduation.project.domains.dtos.AppointmentDTO;
 import riste.kostadinov.graduation.project.domains.dtos.AppointmentRequest;
+import riste.kostadinov.graduation.project.domains.dtos.PatientAppointmentDTO;
 import riste.kostadinov.graduation.project.domains.dtos.projections.AppointmentProjection;
+import riste.kostadinov.graduation.project.domains.dtos.projections.PatientAppointmentProjection;
 import riste.kostadinov.graduation.project.domains.enums.AppointmentStatus;
 import riste.kostadinov.graduation.project.exceptions.AppointmentNotFoundException;
 import riste.kostadinov.graduation.project.repositories.AppointmentRepository;
@@ -16,6 +18,8 @@ import riste.kostadinov.graduation.project.services.*;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.OffsetDateTime;
+import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.List;
 
@@ -37,12 +41,13 @@ public class AppointmentServiceImpl implements AppointmentService {
         Patient patient = this.patientService.findByEmail(request.patientEmail());
         Resource resource = this.resourceService.findById(request.resourceId());
 
+
         appointment.setDentalService(dentalService);
         appointment.setPatient(patient);
         appointment.setResource(resource);
         appointment.setStatus(AppointmentStatus.BOOKED);
-        appointment.setFrom(request.from());
-        appointment.setTo(request.to());
+        appointment.setFromDateTime(request.fromDateTime());
+        appointment.setToDateTime(request.toDateTime());
 
         return this.repository.save(appointment);
     }
@@ -61,8 +66,7 @@ public class AppointmentServiceImpl implements AppointmentService {
     }
 
     @Override
-    public List<AppointmentDTO> getBookedAppointments(ZonedDateTime from, ZonedDateTime to, Long resourceId) {
-// 1.
+    public List<AppointmentDTO> getBookedAppointments(OffsetDateTime from, OffsetDateTime to, Long resourceId) {
         return this.repository.getBookedAppointments(from, to, resourceId)
                 .stream()
                 .map(AppointmentProjection::toDTO)
@@ -70,7 +74,17 @@ public class AppointmentServiceImpl implements AppointmentService {
     }
 
     @Override
-    public void cancel(AppointmentRequest request) {
+    public Appointment cancel(Long id) {
+        Appointment appointment = this.repository.findById(id).orElseThrow(() ->  new AppointmentNotFoundException("Appointment with id " + id + " not found"));
+        appointment.setStatus(AppointmentStatus.CANCELLED);
+        return this.repository.save(appointment);
+    }
 
+    @Override
+    public List<PatientAppointmentDTO> getBookedAppointmentsByPatient(String email) {
+        return this.repository.getBookedAppointmentsByPatient(email)
+                .stream()
+                .map(PatientAppointmentProjection::toDTO)
+                .toList();
     }
 }

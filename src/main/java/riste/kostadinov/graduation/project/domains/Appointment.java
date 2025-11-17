@@ -6,6 +6,7 @@ import riste.kostadinov.graduation.project.domains.enums.AppointmentStatus;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.time.OffsetDateTime;
 import java.time.ZonedDateTime;
 
 @Entity
@@ -18,10 +19,10 @@ public class Appointment {
     private Long id;
 
     @Column(name="date_time_from")
-    private ZonedDateTime from;
+    private OffsetDateTime fromDateTime;
 
     @Column(name="date_time_to")
-    private ZonedDateTime to;
+    private OffsetDateTime toDateTime;
 
     @ManyToOne
     private Patient patient;
