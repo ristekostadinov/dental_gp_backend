@@ -1,6 +1,6 @@
 package riste.kostadinov.graduation.project.domains.dtos;
 
-import java.time.ZonedDateTime;
+import java.time.OffsetDateTime;
 
-public record AppointmentRequest(Long id, ZonedDateTime from, ZonedDateTime to, Long userId, Long patientId) {
+public record AppointmentRequest(OffsetDateTime fromDateTime, OffsetDateTime toDateTime, String patientEmail, Long resourceId, Long dentalServiceId) {
 }

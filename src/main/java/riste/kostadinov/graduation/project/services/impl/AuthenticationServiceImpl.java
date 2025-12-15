@@ -2,6 +2,7 @@ package riste.kostadinov.graduation.project.services.impl;
 import riste.kostadinov.graduation.project.domains.dtos.*;
 import riste.kostadinov.graduation.project.services.AuthenticationService;
 import riste.kostadinov.graduation.project.services.JwtService;
+import riste.kostadinov.graduation.project.services.PatientService;
 import riste.kostadinov.graduation.project.services.UserService;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
@@ -18,6 +19,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
     private final UserService userService;
+    private final PatientService patientService;
 
     @Override
     @Transactional
@@ -53,6 +55,33 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 user.getUsername(),
                 user.getEmail(),
                 user.getRoles());
+    }
+
+    @Override
+    public PatientAuthResponse signUpPatient(PatientRequest patientRequest) {
+        try {
+            var savedPatient = this.patientService.save(patientRequest);
+            var jwt = this.jwtService.generateToken(savedPatient);
+
+            return new PatientAuthResponse(jwt, savedPatient.getUsername(), savedPatient.getEmail());
+        }catch (Exception e){
+            log.error("Error during sign-up process: {}", e.getStackTrace(), e);
+            throw e;
+        }
+    }
+
+    @Override
+    public PatientAuthResponse signInPatient(SignInRequest patientRequest) {
+        log.debug("Processing sign-in request: {}", patientRequest);
+        authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(patientRequest.email(), patientRequest.password())
+        );
+        var user = userService.findByEmail(patientRequest.email());
+        var jwt = jwtService.generateToken(user);
+        return new PatientAuthResponse(
+                jwt,
+                user.getUsername(),
+                user.getEmail());
     }
 
     @Override

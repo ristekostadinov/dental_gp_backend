@@ -1,0 +1,55 @@
+delete from locations where id > 0;
+delete from categories where id > 0;
+
+alter table services add column category_id bigint references categories(id);
+
+insert into locations values
+    (1, 'Skopje'),
+    (2, 'Bitola'),
+    (3, 'Kumanovo'),
+    (4, 'Prilep'),
+    (5, 'Tetovo'),
+    (6, 'Veles'),
+    (7, 'Ohrid'),
+    (8, 'Štip'),
+    (9, 'Gostivar'),
+    (10, 'Strumica'),
+    (11, 'Kavadarci'),
+    (12, 'Kočani'),
+    (13, 'Kičevo'),
+    (14, 'Struga'),
+    (15, 'Radoviš'),
+    (16, 'Gevgelija'),
+    (17, 'Debar'),
+    (18, 'Delčevo'),
+    (19, 'Vinica'),
+    (20, 'Berovo'),
+    (21, 'Kratovo'),
+    (22, 'Kruševo'),
+    (23, 'Makedonski Brod'),
+    (24, 'Negotino'),
+    (25, 'Probištip'),
+    (26, 'Resen'),
+    (27, 'Sveti Nikole'),
+    (28, 'Valandovo'),
+    (29, 'Bogdanci'),
+    (30, 'Demir Hisar'),
+    (31, 'Demir Kapija'),
+    (32, 'Konce'),
+    (33, 'Kriva Palanka'),
+    (34, 'Pehčevo');
+
+INSERT INTO categories (id, name) VALUES
+    (1, 'Orthodontics and Dentofacial Orthopedics'),
+    (2, 'Endodontics'),
+    (3, 'Periodontics'),
+    (4, 'Prosthodontics'),
+    (5, 'Oral and Maxillofacial Surgery'),
+    (6, 'Pediatric Dentistry'),
+    (7, 'Oral and Maxillofacial Pathology'),
+    (8, 'Oral and Maxillofacial Radiology'),
+    (9, 'Dental Public Health'),
+    (10, 'Cosmetic Dentistry'),
+    (11, 'Implantology'),
+    (12, 'Geriatric Dentistry'),
+    (13, 'Laser Dentistry');

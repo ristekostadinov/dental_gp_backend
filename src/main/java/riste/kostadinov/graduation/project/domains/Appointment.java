@@ -1,9 +1,12 @@
 package riste.kostadinov.graduation.project.domains;
 
+import org.hibernate.annotations.Type;
+import riste.kostadinov.graduation.project.configuration.AppointmentStatusConverter;
 import riste.kostadinov.graduation.project.domains.enums.AppointmentStatus;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.time.OffsetDateTime;
 import java.time.ZonedDateTime;
 
 @Entity
@@ -16,10 +19,10 @@ public class Appointment {
     private Long id;
 
     @Column(name="date_time_from")
-    private ZonedDateTime from;
+    private OffsetDateTime fromDateTime;
 
     @Column(name="date_time_to")
-    private ZonedDateTime to;
+    private OffsetDateTime toDateTime;
 
     @ManyToOne
     private Patient patient;
@@ -27,7 +30,11 @@ public class Appointment {
     @ManyToOne
     private Resource resource;
 
-    @Column(name = "status")
     @Enumerated(EnumType.STRING)
+    @Column(name = "status") // This points to the custom type handler
     private AppointmentStatus status;
+
+    @ManyToOne()
+    @JoinColumn(name="service_id")
+    private DentalService dentalService;
 }

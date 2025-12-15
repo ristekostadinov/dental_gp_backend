@@ -1,0 +1,7 @@
+### List all locations
+GET {{baseUrl}}/api/public/locations
+Content-Type: application/json
+
+###List all categories
+GET {{baseUrl}}/api/public/categories
+Content-type: application/json

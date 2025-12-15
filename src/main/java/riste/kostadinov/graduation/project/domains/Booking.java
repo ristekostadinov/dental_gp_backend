@@ -2,7 +2,6 @@ package riste.kostadinov.graduation.project.domains;
 import riste.kostadinov.graduation.project.domains.enums.BookingStatus;
 import jakarta.persistence.*;
 import lombok.Data;
-
 import java.time.ZonedDateTime;
 
 

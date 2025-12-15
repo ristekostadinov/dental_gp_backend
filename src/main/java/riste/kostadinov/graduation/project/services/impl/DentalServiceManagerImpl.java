@@ -9,9 +9,13 @@ import org.springframework.stereotype.Service;
 import riste.kostadinov.graduation.project.domains.DentalService;
 import riste.kostadinov.graduation.project.domains.dtos.DentalServiceDTO;
 import riste.kostadinov.graduation.project.domains.dtos.DentalServiceRequest;
+import riste.kostadinov.graduation.project.domains.dtos.projections.DentalServiceProjection;
 import riste.kostadinov.graduation.project.exceptions.DentalServiceNotFound;
 import riste.kostadinov.graduation.project.repositories.DentalServiceRepository;
 import riste.kostadinov.graduation.project.services.DentalServiceManager;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -53,5 +57,13 @@ public class DentalServiceManagerImpl implements DentalServiceManager {
         return  this.repository
                 .findAll(pageable)
                 .map(service -> new DentalServiceDTO(service.getId(), service.getName()));
+    }
+
+    @Override
+    public List<DentalServiceDTO> findAllDentalServices(Long categoryId, Long locationId) {
+        return this.repository.findAllDentalServices(categoryId, locationId)
+                .stream()
+                .map(DentalServiceProjection::toDTO)
+                .collect(Collectors.toList());
     }
 }

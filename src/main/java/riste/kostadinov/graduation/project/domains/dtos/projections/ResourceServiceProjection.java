@@ -2,7 +2,7 @@ package riste.kostadinov.graduation.project.domains.dtos.projections;
 
 import riste.kostadinov.graduation.project.domains.dtos.ResourceServiceDTO;
 
-public interface ResourceProjection {
+public interface ResourceServiceProjection {
     Long getId();
     String getName();
     String getAddress();

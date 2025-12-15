@@ -6,6 +6,8 @@ import org.springframework.data.domain.Pageable;
 import riste.kostadinov.graduation.project.domains.Resource;
 import riste.kostadinov.graduation.project.domains.dtos.ResourceDTO;
 import riste.kostadinov.graduation.project.domains.dtos.ResourceRequest;
+import riste.kostadinov.graduation.project.domains.dtos.ResourceServiceDTO;
+import riste.kostadinov.graduation.project.domains.dtos.projections.ResourceServiceProjection;
 import riste.kostadinov.graduation.project.exceptions.ResourceNotFoundException;
 import riste.kostadinov.graduation.project.repositories.ResourceRepository;
 import riste.kostadinov.graduation.project.services.ResourceService;
@@ -57,5 +59,13 @@ public class ResourceServiceImpl implements ResourceService {
         Pageable pageable = PageRequest.of(page, size);
         return this.repository.findAll(pageable)
                 .map(resource -> new ResourceDTO(resource.getId(),resource.getName(), resource.getAddress(), resource.getDescription()));
+    }
+
+    @Override
+    public List<ResourceServiceDTO> findAllResources(Long locationId, Long serviceId) {
+        return this.repository
+                .findResourcesWithLocationIdAndServiceId(locationId, serviceId)
+                .stream().map(ResourceServiceProjection::toDTO)
+                .toList();
     }
 }

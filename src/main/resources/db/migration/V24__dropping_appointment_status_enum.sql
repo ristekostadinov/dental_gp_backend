@@ -1,0 +1,1 @@
+alter table if exists appointments alter column status type text;
